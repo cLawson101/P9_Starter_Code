@@ -17,3 +17,25 @@ int puts(const char* p) {
     
     return count+1;
 }
+
+void cp(int from, int to) {
+    while (1) {
+        char buf[100];
+        ssize_t n = read(from,buf,100);
+        if (n == 0) break;
+        if (n < 0) {
+            printf("*** %s:%d read error, fd = %d\n",__FILE__,__LINE__,from);
+            break;
+        }
+        char *ptr = buf;
+        while (n > 0) {
+            ssize_t m = write(to,ptr,n);
+            if (m < 0) {
+                printf("*** %s:%d write error, fd = %d\n",__FILE__,__LINE__,to);
+                break;
+            }
+            n -= m;
+            ptr += m;
+        }
+    }
+}

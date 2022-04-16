@@ -19,4 +19,9 @@ void* memcpy(void* dest, void* src, size_t n);
 extern int putchar(int c);
 extern int puts(const char *p);
 
+extern int isdigit(int c);
+extern int printf(const char* fmt, ...);
+
+extern void cp(int from, int to);
+
 #endif

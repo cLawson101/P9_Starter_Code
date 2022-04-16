@@ -6,7 +6,8 @@ DO NOT PUSH ANY CHANGES TO THIS REPOSITORY OR ELSE IT WILL NOT BE COUNTED.
 
 How to get started using this repo.
 
-- Delete the t0.dir and t0.ok from your p8 repository (make sure that you have made any significant changes to it before doing this step)
+- Make a copy of your p8 repo (this way you don't alter your p8 code)
+- Delete t0.dir and t0.ok in the p8 copy repo
 - Replace the t0.dir and t0.ok from this repository into your p8 repository.
 
 The README for p9 will be called P9_README
