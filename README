@@ -1,0 +1,16 @@
+This repository will only contain the new t0.dir and t0.ok that you will be required to pass as your provided test.
+
+It is to help you to get started while the official repo is still not out.
+
+DO NOT PUSH ANY CHANGES TO THIS REPOSITORY OR ELSE IT WILL NOT BE COUNTED.
+
+How to get started using this repo.
+
+- Delete the t0.dir and t0.ok from your p8 repository (make sure that you have made any significant changes to it before doing this step)
+- Replace the t0.dir and t0.ok from this repository into your p8 repository.
+
+The README for p9 will be called P9_README
+
+After that you will be able to make the necessary changes to your threads.cc/.h, sys.cc / sys.h and any other files.
+
+AGAIN, AFTER THE OFFICAL REPO HAS BEEN PUBLISHED, MOVE ANY NEW CHANGES FROM YOUR P8 REPO INTO THE NEW P9 REPO.
