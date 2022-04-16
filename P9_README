@@ -1,95 +1,74 @@
 Due date:
-    test: 4/13/2022 @ 11:59pm
-    code: 4/15/2022 @ 11:59pm
+    Test: 11/14/2021 @ 11:59pm
+    Code: 11/16/2021 @ 11:59pm
 
 Assignment:
 ~~~~~~~~~~~
 
-- Go to user mode
-- Implement 2 system calls
-- Donate a test case (<csid>.dir, <csid>.ok)
+- More system calls
+- Donate a test case (<csid>.ok and <csid>.dir)
 
 Virtual Address Space:
 ~~~~~~~~~~~~~~~~~~~~~~
 
-0x00000000 - 0x00001000       (invalid)
-0x00001000 - 0x80000000       (shared kernel RWX)
-0x80000000 - 0xFFFFFFFF+1     (per-thread user RWX)
-                              (except for IOPIC and LAPIC)
+0x00000000 - 0x80000000       (shared kernel RWX)
+0x80000000 - 0xFFFFFFFF+1     (private user RWX)
+                              (except ioPIC and laPIC, shared kernel)
 
-User code should not be able to access anything outside the user range. Any
-attempt to do so should lead to kernel panic.
+User code should not be able to access anything outside the user range
 
-Details:
-~~~~~~~~
+System calls:
+~~~~~~~~~~~~~
 
-(1) kernelMain mounts the ext2 file system in drive #1
+Look in t0.dir/sbin/sys.h for information about the system calls you need
+to implement
 
-(2) it looks for a file named /sbin/init
+Our system calls will be modeled after their Unix counterparts with a few
+exceptions:
 
-(3) it loads it in user memory (0x80000000 - 0xf0000000) according to what
-    the ELF file asks for.
+- our semaphores will be much simpler than Sys-V semaphores
+- process ID's are not global, they are parent-scoped
+- our ext2 implementation will not support writing
+- we don't implement file permissions, cwd, uid, gid, etc.
+- each process can have a maximum of 10 active descriptors for
+  each descriptor type: file, semaphore, and child process
+- processes are single-threaded
+- no page-out, no swap space.
+- no signals
 
-    It should reject any non-ELF files or an ELF file that tries to load
-    a program outside the user range
+Those limitations are easy to overcome and we'll be relaxing them
+over the next few weeks
 
-(4) it switches to user mode and starts running the user process at the
-    program entry point
 
-(5) the kernel should protect all its resources from the user program
+Rules:
+~~~~~~
 
-(6) Two system calls are defined:
+- The kernel directory is yours. Make any changes you want but leave the
+  build-related files alone (Makefile, kernel/Makefile, kernel/script.ld)
 
-     - exit(int status)     // exits the current process and shuts down
-                            // the system (we will improve on this later)
+- You need to preserve the system call interfaces defined in
+  t0.dir/sbin/{sys.h,sysS}. This includes:
 
-     - n = write(fd, buffer, len)
-                            // writes up to "len" bytes to a file and returns
-                            // the number of bytes written.
-                            // we will ignore the "fd" this week and just
-                            // print the bytes as characters on the console
+   * The implemented system calls and their numbers
+   * The system call arguments and return values
+   * The system call semantics
+
+- You need to honor the virtual address space rules:
+   * the lower half is for kernel use
+   * the upper half is for process private use except for the two APICs
+
+- You can use any language or build environment to produce your tests but:
+   * please provide sources and makefiles for use by your peers during testing
+   * make sure you commit your binaries as well as sources. The build
+     environment will not build your test
+   * stay within the 100KB limit
 
 Files:
 ~~~~~~
 
-- kernel/          contains the kernel files
-
-- <test>.dir/      the contents of the root disk
-
-- <test>.dir/sbin
-    init.c         ... init source
-    libc.c/libc.h  ... minimal libc implementation
-    sys.S/sys.h    ... user-side system calls
-    init           ... the ELF init file packaged in t0.img
-
-For Makefile help:
-~~~~~~~~~~~~~~~~~~
-
-    make help
-
-To run test:
-~~~~~~~~~~~~
-
-    make -s clean test
-
-To run one test:
-~~~~~~~~~~~~~~~~
-
-    make -s t0.test
-
-To make the output more noisy:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-    make clean test
-
-To run by hand
-~~~~~~~~~~~~~~
-
-    ./run_qemu t0
-
-To attach with gdb
-~~~~~~~~~~~~~~~~~~
-
-    ./debug_qemu t0
-
+- kernel/          contains the kernel files. Do what you want with it.
+                   But leave the build related files alone
+                     - Makefile
+                     - kernel/Makefile
+                     - kernel/sciprt.ld
 
